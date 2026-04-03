@@ -26,19 +26,3 @@ jobs:
       # 3. Maven 빌드 및 패키징
       - name: Build with Maven
         run: mvn -B package --file pom.xml
-
-      # 4. AWS CLI 자격 증명 설정 (빌드 성공 후 실행)
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ap-northeast-2
-
-      # 5. 빌드 완료 이메일 전송
-      - name: Send Email with SES
-        run: |
-          aws ses send-email \
-            --from "bull1997@naver.com" \
-            --destination "ToAddresses=bull1997@naver.com.com" \
-            --message "Subject={Data=Maven 빌드 완료 보고},Body={Text={Data=GitHub Actions를 통한 Maven 빌드가 성공적으로 완료되었습니다!}}"
